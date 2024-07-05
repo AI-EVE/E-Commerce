@@ -60,12 +60,34 @@ namespace Infrastructure.Repositories
                     .Include(p => p.Type)
                     .ToListAsync(),
                 _ => await query
-                    .OrderBy(p => p.Id)
+                    .OrderBy(p => p.Name)
                     .Skip(skip).Take(take)
                     .Include(p => p.Brand)
                     .Include(p => p.Type)
                     .ToListAsync()
             };
+        }
+
+        public async Task<int> GetProductsCountAsync(GetProductsParams getProductsParams)
+        {
+            var query = _context.Products.AsQueryable();
+
+            if (getProductsParams.BrandId.HasValue)
+            {
+                query = query.Where(p => p.ProductBrandId == getProductsParams.BrandId);
+            }
+
+            if (getProductsParams.TypeId.HasValue)
+            {
+                query = query.Where(p => p.ProductTypeId == getProductsParams.TypeId);
+            }
+
+            if (!string.IsNullOrEmpty(getProductsParams.Search))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(getProductsParams.Search.ToLower()));
+            }
+
+            return await query.CountAsync();
         }
     }
 }

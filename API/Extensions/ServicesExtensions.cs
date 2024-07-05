@@ -12,6 +12,8 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IproductBrandRepository, ProductBrandRepository>();
+            services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddAuthorization();
@@ -35,8 +37,10 @@ namespace API.Extensions
                 };
             });
 
-            services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy => {
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy => 
+                {
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                 });
             });
