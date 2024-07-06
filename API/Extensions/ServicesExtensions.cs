@@ -28,6 +28,9 @@ namespace API.Extensions
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IproductBrandRepository, ProductBrandRepository>();
+            services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+            
             services.AddScoped<ITokenService, TokenService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<ApiBehaviorOptions>(options =>

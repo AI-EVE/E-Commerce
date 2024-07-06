@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
@@ -20,13 +19,11 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseStatusCodePagesWithReExecute("/error/{0}");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseStaticFiles();
 
@@ -43,7 +40,6 @@ var context = services.GetRequiredService<SiteContext>();
 var identityContext = services.GetRequiredService<AppIdentityDbContext>();
 var userManager = services.GetRequiredService<UserManager<AppUser>>();
 var logger = services.GetRequiredService<ILogger<Program>>();
-
 try
 {
     await context.Database.MigrateAsync();
@@ -53,9 +49,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.LogError(ex, "An error occurred during migration");
+    logger.LogError(ex, "An error occured during migration");
 }
 
 app.Run();
-
-
